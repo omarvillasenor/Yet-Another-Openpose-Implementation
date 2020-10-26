@@ -1,10 +1,11 @@
 import cv2
 import visualizations as vis
-from model_wrapper import ModelWrapper
+from applications.model_wrapper import ModelWrapper
+import time
 
 import configs.draw_config as draw_config
 
-model_path = "../trained_models/model11_test-15Sun1219-2101"
+model_path = "trained_models/model11_test-15Sun1219-2101"
 
 
 class CamApp:
@@ -33,7 +34,7 @@ class CamApp:
             img_rgb = cv2.cvtColor(cam_img_bgr, cv2.COLOR_BGR2RGB)
 
             processed_img_rgb = self.process_frame(img_rgb)
-
+            time.sleep(4)
             processed_img_bgr = cv2.cvtColor(processed_img_rgb, cv2.COLOR_RGB2BGR)
             cv2.imshow("cam-test", processed_img_bgr)
 
