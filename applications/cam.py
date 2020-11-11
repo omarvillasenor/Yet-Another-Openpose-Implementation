@@ -1,6 +1,6 @@
 import cv2
 import visualizations as vis
-from model_wrapper import ModelWrapper
+from applications.model_wrapper import ModelWrapper
 
 import configs.draw_config as draw_config
 
