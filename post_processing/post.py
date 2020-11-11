@@ -5,6 +5,12 @@ import numpy as np
 import numba
 import cv2
 
+def vector_direction(a, b):
+    tan = (b[1] - a[1]) / (b[0] / a[0])
+    direction = np.degrees( np.arctan(tan) )
+    return direction
+
+
 
 @numba.njit
 def mark_islands(truth_islands) -> (np.ndarray, dict):
@@ -343,16 +349,39 @@ class Skeletonizer:
         Eso es lo que empata la predicción con los respectivos puntos que están definidos
         """
         potential_kpts = self._localize_potential_kpts()
-        print("potential_kpts")
-        print(potential_kpts)
+        self.check_positions(potential_kpts)
         joint_lists = self._create_joints(potential_kpts)
-        print("joint_lists")
-        print(joint_lists)
         normalized_joint_list = self._normalize_joint_coords(joint_lists)
-        print("normalized_joint_list")
-        print(normalized_joint_list)
         skeletons = self._build_skeletons(normalized_joint_list)
         return skeletons
+    
+    def check_positions(self, potential_kpts):
+        status = None
+        hombro_derecho = potential_kpts['Rshoulder']
+        codo_derecho = potential_kpts['Relbow']
+        hombro_izquierdo = potential_kpts['Lshoulder']
+        codo_izquierdo = potential_kpts['Lelbow']
+        mano_derecha = potential_kpts['Rwrist']
+        mano_izquierda = potential_kpts['Lwrist']
+        right_direction_ = None
+        left_direction_ = None
+        if hombro_derecho is not None and codo_derecho is not None:
+            right_direction_ = vector_direction(hombro_derecho[0], codo_derecho[0])
+            if -90 < right_direction_ < -70:
+                status = 'derecho'
+            elif mano_derecha != None and -50 < right_direction_ < -30:
+                angulo_codo_mano = vector_direction(codo_derecho[0], mano_derecha[0])
+                if -85 < angulo_codo_mano < -70:
+                    status = 'adelante'
+        if hombro_izquierdo is not None and codo_izquierdo is not None:
+            left_direction_ = vector_direction(hombro_izquierdo[0], codo_izquierdo[0])
+            if 90 > left_direction_ > 70:
+                status = 'izquierdo' if status == None or status == 'derecho' else 'Ambros brazos abiertos'
+            elif mano_izquierda != None and 50 > right_direction_ > 30:
+                angulo_codo_mano = vector_direction(codo_izquierdo[0], mano_izquierda[0])
+                if 85 > angulo_codo_mano > 70:
+                    status = 'atras'
+        if status != None: print(status)
 
 
 class Skeleton:
