@@ -24,6 +24,7 @@ class ControlDrone:
 
     def __init__(self, drone):
         self.drone = drone
+        self.drone.subscribe(drone.EVENT_FILE_RECEIVED, self.handleFileReceived)
         self.controls = {
             'adelante': 'forward',
             'atras': 'backward',
@@ -32,7 +33,7 @@ class ControlDrone:
             'foto': lambda drone, speed: drone.take_picture(),
         }
         self.speed = 10
-
+        self.date_fmt = '%Y-%m-%d_%H%M%S'
 
     def start_fligt(self):
         self.drone.takeoff()
@@ -56,6 +57,11 @@ class ControlDrone:
         else:
             accion(self.drone, self.speed)
 
+    def handleFileReceived(self, event, sender, data):
+        path = 'tello-%s.jpeg' % (
+            datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S'))
+        with open(path, 'wb') as fd:
+            fd.write(data)
 
 # """
 # Aquí acabamos el video cuando el dron está grabando y lo guardamos
