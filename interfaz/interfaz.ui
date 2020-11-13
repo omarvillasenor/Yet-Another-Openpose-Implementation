@@ -31,7 +31,7 @@
     <property name="geometry">
      <rect>
       <x>710</x>
-      <y>190</y>
+      <y>270</y>
       <width>271</width>
       <height>61</height>
      </rect>
@@ -44,7 +44,7 @@
     <property name="geometry">
      <rect>
       <x>710</x>
-      <y>100</y>
+      <y>180</y>
       <width>271</width>
       <height>61</height>
      </rect>
@@ -73,7 +73,7 @@
     <property name="geometry">
      <rect>
       <x>710</x>
-      <y>280</y>
+      <y>350</y>
       <width>271</width>
       <height>61</height>
      </rect>
@@ -86,13 +86,26 @@
     <property name="geometry">
      <rect>
       <x>710</x>
-      <y>370</y>
+      <y>430</y>
       <width>271</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
      <string>Cerrar Conexión</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="FlightButton">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>100</y>
+      <width>271</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Elevar drone</string>
     </property>
    </widget>
   </widget>

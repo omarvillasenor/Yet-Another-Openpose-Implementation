@@ -1,4 +1,4 @@
-import ejecucion_red  as er
+import interfaz.ejecucion_red  as er
 import numpy as np
 import traceback
 import tellopy
@@ -7,7 +7,7 @@ import cv2
 import sys
 import av
 
-model = er.get_model_trained()
+# model = er.get_model_trained()
 drone = tellopy.Tello()
 
 def start_drone():
@@ -20,7 +20,7 @@ def start_drone():
         try:
             container = av.open(drone.get_video_stream())
             print(container)
-            return container
+            return drone, container
         except av.AVError as ave:
             print(ave)
         
