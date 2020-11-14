@@ -39,7 +39,7 @@ class Thread(QThread):
                 rgbImage = np.array(frame.to_image())
                 processed_img_rgb = self.process_frame(rgbImage)
                 
-                h, w, ch = processed_img_bgr.shape
+                h, w, ch = processed_img_rgb.shape
                 bytesPerLine = ch * w
                 convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
                 p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
