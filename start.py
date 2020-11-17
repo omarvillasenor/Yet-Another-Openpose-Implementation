@@ -30,7 +30,7 @@ class Thread(QThread):
     
     def process_frame(self, img):
         global model_wrapper
-        position ,skeletons = model_wrapper.process_image(img)
+        position = model_wrapper.process_image(img)
         if position is not None:
             drone.get_movement(position)
         # skeleton_drawer = vis.SkeletonDrawer(img, draw_config)
@@ -39,21 +39,25 @@ class Thread(QThread):
         return img
 
     def run(self):
-
         while True:
-            for frame in container.decode(video=0):
-                rgbImage = np.array(frame.to_image())
-                processed_img_rgb = self.process_frame(rgbImage)
-                
-                h, w, ch = processed_img_rgb.shape
-                bytesPerLine = ch * w
-                convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-                self.changePixmap.emit(p)
-                if frame.time_base < 1.0/60:
-                    time_base = 1.0/60
-                else:
-                    time_base = frame.time_base
+            counter = 0
+            for frame in container.decode(video=0):               
+                if counter == 9:
+                    rgbImage = np.array(frame.to_image())
+                    #rgbImage = cv2.resize(rgbImage, (640, 480))
+                    processed_img_rgb = self.process_frame(rgbImage)
+                    
+                    h, w, ch = processed_img_rgb.shape
+                    bytesPerLine = ch * w
+                    convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
+                    p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+                    self.changePixmap.emit(p)
+                    counter = 0
+                counter+=1
+                # if frame.time_base < 1.0/60:
+                #     time_base = 1.0/60
+                # else:
+                #     time_base = frame.time_base
                 
 
 

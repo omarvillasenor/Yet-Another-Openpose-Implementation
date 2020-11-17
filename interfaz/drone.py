@@ -19,7 +19,6 @@ def start_drone():
         container = None
         try:
             container = av.open(drone.get_video_stream())
-            print(container)
             return drone, container
         except av.AVError as ave:
             print(ave)
