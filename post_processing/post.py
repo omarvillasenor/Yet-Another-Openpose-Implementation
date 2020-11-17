@@ -382,7 +382,7 @@ class Skeletonizer:
                 angulo_codo_mano = vector_direction(codo_izquierdo[0], mano_izquierda[0])
                 if 85 > angulo_codo_mano > 70:
                     status = 'atras'
-        print(status) if status != None else print("Nada")
+        # print(status) if status != None else print("Nada")
         return status if status != None else None
 
 class Skeleton:

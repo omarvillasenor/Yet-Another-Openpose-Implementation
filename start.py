@@ -17,19 +17,25 @@ from applications.model_wrapper import ModelWrapper
 import configs.draw_config as draw_config
 import visualizations as vis
 
+from drone.control import ControlDrone
+
 container = None
 drone = None
+model_path = "trained_models/model11_test-15Sun1219-2101"
+model_wrapper = ModelWrapper(model_path)
+
 
 class Thread(QThread):
     changePixmap = pyqtSignal(QImage)
     
     def process_frame(self, img):
-
-        position ,skeletons = self.model_wrapper.process_image(img)
-        drone.get_movement(position)
-        skeleton_drawer = vis.SkeletonDrawer(img, draw_config)
-        for skeleton in skeletons:
-            skeleton.draw_skeleton(skeleton_drawer.joint_draw, skeleton_drawer.kpt_draw)
+        global model_wrapper
+        position ,skeletons = model_wrapper.process_image(img)
+        if position is not None:
+            drone.get_movement(position)
+        # skeleton_drawer = vis.SkeletonDrawer(img, draw_config)
+        # for skeleton in skeletons:
+        #     skeleton.draw_skeleton(skeleton_drawer.joint_draw, skeleton_drawer.kpt_draw)
         return img
 
     def run(self):
@@ -74,7 +80,7 @@ class MainWindow(QMainWindow):
     def start_drone(self):
         global container, drone
         self.drone, container = dr.start_drone()
-        drone = self.drone
+        drone = ControlDrone(self.drone)
         print(self.drone)
         self.CameraLabel.show()
         th = Thread(self)

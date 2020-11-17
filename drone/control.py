@@ -28,8 +28,8 @@ class ControlDrone:
         self.controls = {
             'adelante': 'forward',
             'atras': 'backward',
-            'izquierdo': lambda drone, speed: move_right(drone, speed),
-            'derecho': lambda drone, speed: move_left(drone, speed),
+            'izquierdo': lambda drone, speed: self.move_right(),
+            'derecho': lambda drone, speed: self.move_left(),
             'foto': lambda drone, speed: drone.take_picture(),
         }
         self.speed = 10
@@ -42,11 +42,11 @@ class ControlDrone:
         drone.land()
         drone.quit()
 
-    def move_right(self,):
+    def move_right(self):
         self.drone.counter_clockwise(self.speed*3)
         self.drone.right(self.speed*2.5)
 
-    def move_left(self,):
+    def move_left(self):
         self.drone.clockwise(self.speed*3)
         self.drone.left(self.speed*2.5)
 
