@@ -43,19 +43,20 @@ class ControlDrone:
         drone.quit()
 
     def move_right(self):
-        self.drone.counter_clockwise(self.speed*3)
-        self.drone.right(self.speed*2.5)
+        self.drone.counter_clockwise(self.speed)
+        self.drone.right(self.speed)
 
     def move_left(self):
-        self.drone.clockwise(self.speed*3)
-        self.drone.left(self.speed*2.5)
+        self.drone.clockwise(self.speed)
+        self.drone.left(self.speed)
 
-    def get_movement(self, position):
+    def get_movement(self, position, speed=-1):
+        speed = self.speed if speed == -1 else speed
         accion = self.controls[position]
         if type(accion) == str:
             getattr(self.drone, accion)(speed)
         else:
-            accion(self.drone, self.speed)
+            accion(self.drone, speed)
 
     def handleFileReceived(self, event, sender, data):
         path = 'tello-%s.jpeg' % (

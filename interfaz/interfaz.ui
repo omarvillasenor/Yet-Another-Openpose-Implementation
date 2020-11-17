@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1005</width>
-    <height>559</height>
+    <width>1009</width>
+    <height>696</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <widget class="QPushButton" name="StartButton">
     <property name="geometry">
      <rect>
-      <x>710</x>
+      <x>700</x>
       <y>20</y>
       <width>271</width>
       <height>61</height>
@@ -30,8 +30,8 @@
    <widget class="QPushButton" name="StopButton">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>270</y>
+      <x>700</x>
+      <y>410</y>
       <width>271</width>
       <height>61</height>
      </rect>
@@ -43,8 +43,8 @@
    <widget class="QPushButton" name="PictureButton">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>180</y>
+      <x>700</x>
+      <y>330</y>
       <width>271</width>
       <height>61</height>
      </rect>
@@ -56,8 +56,8 @@
    <widget class="QLabel" name="CameraLabel">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>20</y>
+      <x>20</x>
+      <y>80</y>
       <width>640</width>
       <height>480</height>
      </rect>
@@ -72,8 +72,8 @@
    <widget class="QPushButton" name="PalmButton">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>350</y>
+      <x>700</x>
+      <y>490</y>
       <width>271</width>
       <height>61</height>
      </rect>
@@ -85,8 +85,8 @@
    <widget class="QPushButton" name="close_button">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>430</y>
+      <x>700</x>
+      <y>570</y>
       <width>271</width>
       <height>61</height>
      </rect>
@@ -98,8 +98,8 @@
    <widget class="QPushButton" name="FlightButton">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>100</y>
+      <x>700</x>
+      <y>90</y>
       <width>271</width>
       <height>61</height>
      </rect>
@@ -108,14 +108,40 @@
      <string>Elevar drone</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="UpButton">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>170</y>
+      <width>271</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Subir drone</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="DownButton">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>250</y>
+      <width>271</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Bajar drone</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1005</width>
-     <height>20</height>
+     <width>1009</width>
+     <height>26</height>
     </rect>
    </property>
   </widget>

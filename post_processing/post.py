@@ -6,9 +6,12 @@ import numba
 import cv2
 
 def vector_direction(a, b):
-    tan = (b[1] - a[1]) / (b[0] / a[0])
-    direction = np.degrees( np.arctan(tan) )
-    return direction
+    try:
+        tan = (b[1] - a[1]) / (b[0] / a[0])
+        direction = np.degrees( np.arctan(tan) )
+        return direction
+    except:
+        return 0
 
 
 
@@ -377,7 +380,7 @@ class Skeletonizer:
         if hombro_izquierdo is not None and codo_izquierdo is not None:
             left_direction_ = vector_direction(hombro_izquierdo[0], codo_izquierdo[0])
             if 90 > left_direction_ > 70:
-                status = 'izquierdo' if status == None or status == 'derecho' else 'Ambros brazos abiertos'
+                status = 'izquierdo' if status == None or status == 'derecho' else 'foto'
             elif mano_izquierda != None and 50 > left_direction_ > 30:
                 angulo_codo_mano = vector_direction(codo_izquierdo[0], mano_izquierda[0])
                 if 85 > angulo_codo_mano > 70:

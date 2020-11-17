@@ -33,31 +33,47 @@ class Thread(QThread):
         position = model_wrapper.process_image(img)
         if position is not None:
             drone.get_movement(position)
+            drone.get_movement(position, 0)
         # skeleton_drawer = vis.SkeletonDrawer(img, draw_config)
         # for skeleton in skeletons:
         #     skeleton.draw_skeleton(skeleton_drawer.joint_draw, skeleton_drawer.kpt_draw)
-        return img
+        # return img
 
     def run(self):
-        while True:
-            counter = 0
-            for frame in container.decode(video=0):               
-                if counter == 9:
-                    rgbImage = np.array(frame.to_image())
-                    #rgbImage = cv2.resize(rgbImage, (640, 480))
-                    processed_img_rgb = self.process_frame(rgbImage)
+        # while True:
+        #     counter = 0
+        #     for frame in container.decode(video=0):
+                
+        #             rgbImage = np.array(frame.to_image())
+        #             self.process_frame(rgbImage)
                     
-                    h, w, ch = processed_img_rgb.shape
-                    bytesPerLine = ch * w
-                    convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                    p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-                    self.changePixmap.emit(p)
-                    counter = 0
-                counter+=1
-                # if frame.time_base < 1.0/60:
-                #     time_base = 1.0/60
-                # else:
-                #     time_base = frame.time_base
+        #             h, w, ch = rgbImage.shape
+        #             bytesPerLine = ch * w
+        #             convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
+        #             p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+        #             self.changePixmap.emit(p)
+        #             counter = 0
+        frame_skip = 300
+        while True:
+            for frame in container.decode(video=0):
+                if 0 < frame_skip:
+                    frame_skip = frame_skip - 1
+                    continue
+                start_time = time.time()
+                rgbImage = np.array(frame.to_image())
+                self.process_frame(rgbImage)
+                
+                h, w, ch = rgbImage.shape
+                bytesPerLine = ch * w
+                convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
+                p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+                self.changePixmap.emit(p)
+                if frame.time_base < 1.0/60:
+                    time_base = 1.0/60
+                else:
+                    time_base = frame.time_base
+                frame_skip = int((time.time() - start_time)/time_base)
+               
                 
 
 
@@ -73,6 +89,8 @@ class MainWindow(QMainWindow):
         self.StopButton.clicked.connect(self.land)
         self.PalmButton.clicked.connect(self.palm_land)
         self.FlightButton.clicked.connect(self.flight)
+        self.UpButton.clicked.connect(self.up)
+        self.DownButton.clicked.connect(self.down)
         self.CameraLabel.hide()
         self.show()
         self.drone = None
@@ -92,22 +110,35 @@ class MainWindow(QMainWindow):
         th.start()
         self.StartButton.hide()
 
+    def up(self):
+        if self.drone is not None:
+            self.drone.up(10)
+
+    def down(self):
+        if self.drone is not None:
+            self.drone.down(10)
+
     def take_picture(self):
-        self.drone.take_picture()
+        if self.drone is not None:
+            self.drone.take_picture()
 
     def palm_land(self):
-        self.drone.palm_land()
+        if self.drone is not None:
+            self.drone.palm_land()
 
     def close_conection(self):
-        self.CameraLabel.hide()
-        self.StartButton.show()
-        self.drone.quit()
+        if self.drone is not None:
+            self.CameraLabel.hide()
+            self.StartButton.show()
+            self.drone.quit()
 
     def land(self):
-        self.drone.land()
+        if self.drone is not None:
+            self.drone.land()
     
     def flight(self):
-        self.drone.takeoff()
+        if self.drone is not None:
+            self.drone.takeoff()
 
 app = QApplication(sys.argv)
 ex2 = MainWindow()
