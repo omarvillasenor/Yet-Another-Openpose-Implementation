@@ -357,6 +357,7 @@ class Skeletonizer:
         skeletons = self._build_skeletons(normalized_joint_list)
         return skeletons
     
+    #Esta función cálcula el ángulo de los brazos y obtiene las posiciones
     def check_positions(self):
         potential_kpts = self._localize_potential_kpts()
         status = None
@@ -387,6 +388,7 @@ class Skeletonizer:
         # print(status) if status != None else print("Nada")
         return status, self.check_human_vision(potential_kpts)
 
+    #Esta función pretende detectar al humano para poderse "autoajustar"
     def check_human_vision(self, potential_kpts):
         cadera_derecha = potential_kpts['Rhip']
         cadera_izquierda = potential_kpts['Lhip']

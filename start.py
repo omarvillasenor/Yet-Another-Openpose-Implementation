@@ -1,9 +1,13 @@
+"""
+Este archivo contiene las funciones de la interfaz y a su vez controles básicos del drone
+"""
+
 from PyQt5.QtWidgets import QDialog, QTableWidget, QTableWidgetItem, QMessageBox
 from PyQt5.QtCore import QThread, Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.uic import loadUi
-import interfaz.drone as dr
+import interfaz.drone as dr #Esta es la fución que se conecta al drone y obtiene el contenedor del video
 import numpy as np
 import traceback
 import tellopy
@@ -19,6 +23,7 @@ import visualizations as vis
 
 from drone.control import ControlDrone
 
+#variables globales necesarias para controlar el drone
 container = None
 drone = None
 model_path = "trained_models/model11_test-15Sun1219-2101"
@@ -26,42 +31,58 @@ model_wrapper = ModelWrapper(model_path)
 
 
 class Thread(QThread):
+    """
+    Esta clase permite ejecutar de forma paralela a la interfaz la imagen que nos provee la cámara del dron
+    """
+
     changePixmap = pyqtSignal(QImage)
     
     def process_frame(self, img):
         global model_wrapper
         return model_wrapper.process_image(img)
 
+    #Esta función arranca el hilo, muestra la imagen, la analiza y obtiene la posición que contiene la persona (Basado en los puntos definidos)
     def run(self):
         flag = False
         frame_skip = 300
         last = ""
         while True:
+            time.sleep(0.01)
             for frame in container.decode(video=0):
-                time.sleep(0.01)
                 if 0 < frame_skip:
                     frame_skip = frame_skip - 1
                     continue
                 start_time = time.time()
                 rgbImage = np.array(frame.to_image())
-                position, human = self.process_frame(rgbImage)
+                position, _ = self.process_frame(rgbImage)
                 
-                if human != True:
-                    drone.move_up()
-                    flag = True
 
-                else:
+
+                if position is not None:
+                    last = position
+                    drone.get_movement(position)
+                    flag = True
+                elif last is not "" and position is None:
                     if flag == True:
-                        drone.move_up(0)
+                        drone.get_movement(last, 0)
                         flag = False
-                    if position is not None:
-                        last = position
-                        drone.get_movement(position)
-                        flag = True
-                    elif last is not "":
-                        if flag == True:
-                            drone.get_movement(last, 0)
-                            flag = False
+
+                # if human != True:
+                #     drone.move_up()
+                #     flag = True
+
+                # else:
+                #     if flag == True:
+                #         drone.move_up(0)
+                #         flag = False
+                #     if position is not None:
+                #         last = position
+                #         drone.get_movement(position)
+                #         flag = True
+                #     elif last is not "":
+                #         if flag == True:
+                #             drone.get_movement(last, 0)
+                #             flag = False
                 
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
@@ -91,24 +112,58 @@ class MainWindow(QMainWindow):
         self.FlightButton.clicked.connect(self.flight)
         self.UpButton.clicked.connect(self.up)
         self.DownButton.clicked.connect(self.down)
-        self.CameraLabel.hide()
-        self.show()
+        self.hide_buttons()
         self.drone = None
+        self.setFixedSize(self.width(),self.height())
+
+    def hide_buttons(self):
+        self.StartButton.show()
+        self.PictureButton.hide()
+        self.close_button.hide()
+        self.StopButton.hide()
+        self.PalmButton.hide()
+        self.FlightButton.hide()
+        self.UpButton.hide()
+        self.DownButton.hide()
+        self.CameraLabel.hide()
+
+    def show_buttons(self):
+        self.StartButton.hide()
+        self.PictureButton.show()
+        self.close_button.show()
+        self.StopButton.show()
+        self.PalmButton.show()
+        self.FlightButton.show()
+        self.UpButton.show()
+        self.DownButton.show()
+        self.CameraLabel.show()
 
     @pyqtSlot(QImage)
     def setImage(self, image):
         self.CameraLabel.setPixmap(QPixmap.fromImage(image))
 
+    #Esta función arranca el drone e inicializa los botones de la interfaz
     def start_drone(self):
         global container, drone
         self.drone, container = dr.start_drone()
-        drone = ControlDrone(self.drone)
-        print(self.drone)
-        self.CameraLabel.show()
-        th = Thread(self)
-        th.changePixmap.connect(self.setImage)
-        th.start()
-        self.StartButton.hide()
+        if self.drone != None:
+            self.show_buttons()
+            drone = ControlDrone(self.drone)
+            self.CameraLabel.show()
+            th = Thread(self)
+            th.changePixmap.connect(self.setImage)
+            th.start()
+            self.StartButton.hide()
+        else:
+            self.errorMessage("No se encontró un drone para conectar, verifique la red WiFi y la batería")
+            self.close()
+
+    def errorMessage(self, message):
+        errorBox = QMessageBox()
+        errorBox.setIcon(QMessageBox.Warning)
+        errorBox.setText(message)
+        errorBox.setWindowTitle("ERROR")
+        errorBox.exec_()
 
     def up(self):
         if self.drone is not None:

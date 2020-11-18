@@ -1,24 +1,11 @@
+"""
+Este archivo contiene las funciones necesarias para mover el drone con los resultados de la red neuronal
+"""
 import datetime
 import tellopy
 import time
 import sys
 import os
-# import pygame
-# import pygame.display
-# import pygame.key
-# import pygame.locals
-# import pygame.font
-# from subprocess import Popen, PIPE
-# from tellopy import logger
-
-# log = tellopy.logger.Logger('TelloUI')
-
-# prev_flight_data = None
-# video_player = None
-# video_recorder = None
-# font = None
-# wid = None
-# date_fmt = '%Y-%m-%d_%H%M%S'
 
 class ControlDrone:
 
@@ -39,8 +26,8 @@ class ControlDrone:
         self.drone.takeoff()
     
     def stop_drone(self):
-        drone.land()
-        drone.quit()
+        self.drone.land()
+        self.drone.quit()
 
     def move_right(self, speed):
         self.drone.counter_clockwise(speed)
@@ -56,6 +43,7 @@ class ControlDrone:
         else:
             self.drone.up(speed)
 
+    #Esta función obtiene el texto de la posición y lo convierte en acción, tomándola del diccionario self.controls
     def get_movement(self, position, speed=-1):
         time.sleep(0.01)
         if speed == -1:
