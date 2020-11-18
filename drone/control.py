@@ -49,6 +49,9 @@ class ControlDrone:
     def move_left(self):
         self.drone.clockwise(self.speed)
         self.drone.left(self.speed)
+    
+    def move_up(self):
+        self.drone.up(self.speed)
 
     def get_movement(self, position, speed=-1):
         speed = self.speed if speed == -1 else speed

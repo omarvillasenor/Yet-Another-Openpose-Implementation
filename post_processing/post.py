@@ -352,7 +352,6 @@ class Skeletonizer:
         Eso es lo que empata la predicción con los respectivos puntos que están definidos
         """
         potential_kpts = self._localize_potential_kpts()
-        # self.check_positions(potential_kpts)
         joint_lists = self._create_joints(potential_kpts)
         normalized_joint_list = self._normalize_joint_coords(joint_lists)
         skeletons = self._build_skeletons(normalized_joint_list)
@@ -386,7 +385,21 @@ class Skeletonizer:
                 if 85 > angulo_codo_mano > 70:
                     status = 'atras'
         # print(status) if status != None else print("Nada")
-        return status if status != None else None
+        return status, check_human_vision(potential_kpts)
+
+    def check_human_vision(self, potential_kpts):
+        cadera_derecha = potential_kpts['Rhip']
+        cadera_izquierda = potential_kpts['Lhip']
+        esternon = potential_kpts['sternum']
+        if esternon is not None:
+            return True
+        else:
+            if cadera_derecha is not None or cadera_izquierda is not None:
+                return "up_low"
+            else:
+                return "up_high"
+
+
 
 class Skeleton:
     @classmethod

@@ -30,29 +30,18 @@ class Thread(QThread):
     
     def process_frame(self, img):
         global model_wrapper
-        position = model_wrapper.process_image(img)
+        position, human = model_wrapper.process_image(img)
         if position is not None:
             drone.get_movement(position)
             drone.get_movement(position, 0)
-        # skeleton_drawer = vis.SkeletonDrawer(img, draw_config)
-        # for skeleton in skeletons:
-        #     skeleton.draw_skeleton(skeleton_drawer.joint_draw, skeleton_drawer.kpt_draw)
-        # return img
+        if human != True:
+            if human == "up_low":
+                drone.up(10)
+                drone.up(0)
+            elif human == "up_high":
+                drone.up(0) 
 
     def run(self):
-        # while True:
-        #     counter = 0
-        #     for frame in container.decode(video=0):
-                
-        #             rgbImage = np.array(frame.to_image())
-        #             self.process_frame(rgbImage)
-                    
-        #             h, w, ch = rgbImage.shape
-        #             bytesPerLine = ch * w
-        #             convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-        #             p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-        #             self.changePixmap.emit(p)
-        #             counter = 0
         frame_skip = 300
         while True:
             for frame in container.decode(video=0):
