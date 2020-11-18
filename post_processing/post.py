@@ -380,13 +380,13 @@ class Skeletonizer:
         if hombro_izquierdo is not None and codo_izquierdo is not None:
             left_direction_ = vector_direction(hombro_izquierdo[0], codo_izquierdo[0])
             if 90 > left_direction_ > 70:
-                status = 'izquierdo' if status == None or status == 'derecho' else 'foto'
+                status = 'izquierdo' if status == None else 'foto' if status == 'derecho' else status
             elif mano_izquierda != None and 50 > left_direction_ > 30:
                 angulo_codo_mano = vector_direction(codo_izquierdo[0], mano_izquierda[0])
                 if 85 > angulo_codo_mano > 70:
                     status = 'atras'
-        # print(status) if status != None else print("Nada")
-        return status, self.check_human_vision(potential_kpts)
+        print(status) if status != None else print("Nada")
+        return status
 
     #Esta función pretende detectar al humano para poderse "autoajustar"
     def check_human_vision(self, potential_kpts):

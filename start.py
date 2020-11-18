@@ -54,36 +54,19 @@ class Thread(QThread):
                     continue
                 start_time = time.time()
                 rgbImage = np.array(frame.to_image())
-                position, _ = self.process_frame(rgbImage)
-                
-
+                position = self.process_frame(rgbImage)
 
                 if position is not None:
                     last = position
                     drone.get_movement(position)
                     flag = True
-                elif last is not "" and position is None:
+                elif last != "" and position is None:
                     if flag == True:
                         drone.get_movement(last, 0)
                         flag = False
+                else:
+                    drone.move_up(1)
 
-                # if human != True:
-                #     drone.move_up()
-                #     flag = True
-
-                # else:
-                #     if flag == True:
-                #         drone.move_up(0)
-                #         flag = False
-                #     if position is not None:
-                #         last = position
-                #         drone.get_movement(position)
-                #         flag = True
-                #     elif last is not "":
-                #         if flag == True:
-                #             drone.get_movement(last, 0)
-                #             flag = False
-                
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
                 convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
@@ -115,6 +98,7 @@ class MainWindow(QMainWindow):
         self.hide_buttons()
         self.drone = None
         self.setFixedSize(self.width(),self.height())
+        self.speed = 10
 
     def hide_buttons(self):
         self.StartButton.show()
@@ -154,6 +138,9 @@ class MainWindow(QMainWindow):
             th.changePixmap.connect(self.setImage)
             th.start()
             self.StartButton.hide()
+            self.flight()
+            self.up()
+            self.up()
         else:
             self.errorMessage("No se encontró un drone para conectar, verifique la red WiFi y la batería")
             self.close()
@@ -167,7 +154,7 @@ class MainWindow(QMainWindow):
 
     def up(self):
         if self.drone is not None:
-            self.drone.up(10)
+            self.drone.up(self.speed*1.5)
 
     def down(self):
         if self.drone is not None:
