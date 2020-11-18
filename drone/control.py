@@ -30,11 +30,13 @@ class ControlDrone:
         self.drone.quit()
 
     def move_right(self, speed):
-        self.drone.counter_clockwise(speed)
+        speed_clock = speed * 0.5 if speed > 0 and speed % 10 == 0 else speed
+        self.drone.counter_clockwise(speed_clock)
         self.drone.right(speed)
 
     def move_left(self, speed):
-        self.drone.clockwise(speed)
+        speed_clock = speed * 0.5 if speed > 0 and speed % 10 == 0 else speed
+        self.drone.clockwise(speed_clock)
         self.drone.left(speed)
     
     def move_up(self, speed=-1):
