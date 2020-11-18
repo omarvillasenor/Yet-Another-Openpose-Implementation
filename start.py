@@ -37,8 +37,8 @@ class Thread(QThread):
         frame_skip = 300
         last = ""
         while True:
-            time.sleep(0.01)
             for frame in container.decode(video=0):
+                time.sleep(0.01)
                 if 0 < frame_skip:
                     frame_skip = frame_skip - 1
                     continue
