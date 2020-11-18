@@ -33,6 +33,7 @@ class Thread(QThread):
         return model_wrapper.process_image(img)
 
     def run(self):
+        flag = False
         frame_skip = 300
         last = ""
         while True:
@@ -47,14 +48,20 @@ class Thread(QThread):
                 
                 if human != True:
                     drone.move_up()
+                    flag = True
 
                 else:
-                    drone.move_up(0)
+                    if flag == True:
+                        drone.move_up(0)
+                        flag = False
                     if position is not None:
                         last = position
                         drone.get_movement(position)
+                        flag = True
                     elif last is not "":
-                        drone.get_movement(last, 0)
+                        if flag == True:
+                            drone.get_movement(last, 0)
+                            flag = False
                 
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
