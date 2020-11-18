@@ -30,27 +30,31 @@ class Thread(QThread):
     
     def process_frame(self, img):
         global model_wrapper
-        position, human = model_wrapper.process_image(img)
-        if position is not None:
-            drone.get_movement(position)
-            drone.get_movement(position, 0)
-        if human != True:
-            if human == "up_low":
-                drone.up(10)
-                drone.up(0)
-            elif human == "up_high":
-                drone.up(0) 
+        return model_wrapper.process_image(img)
 
     def run(self):
         frame_skip = 300
+        last = ""
         while True:
+            time.sleep(0.01)
             for frame in container.decode(video=0):
                 if 0 < frame_skip:
                     frame_skip = frame_skip - 1
                     continue
                 start_time = time.time()
                 rgbImage = np.array(frame.to_image())
-                self.process_frame(rgbImage)
+                position, human = self.process_frame(rgbImage)
+                
+                if human != True:
+                    drone.move_up()
+
+                else:
+                    drone.move_up(0)
+                    if position is not None:
+                        last = position
+                        drone.get_movement(position)
+                    elif last is not "":
+                        drone.get_movement(last, 0)
                 
                 h, w, ch = rgbImage.shape
                 bytesPerLine = ch * w
@@ -108,8 +112,8 @@ class MainWindow(QMainWindow):
             self.drone.down(10)
 
     def take_picture(self):
-        if self.drone is not None:
-            self.drone.take_picture()
+        global drone
+        drone.take_picture()
 
     def palm_land(self):
         if self.drone is not None:

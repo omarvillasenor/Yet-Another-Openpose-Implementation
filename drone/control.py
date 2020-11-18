@@ -28,8 +28,8 @@ class ControlDrone:
         self.controls = {
             'adelante': 'forward',
             'atras': 'backward',
-            'izquierdo': lambda drone, speed: self.move_right(),
-            'derecho': lambda drone, speed: self.move_left(),
+            'izquierdo': lambda drone, speed: self.move_right(speed),
+            'derecho': lambda drone, speed: self.move_left(speed),
             'foto': lambda drone, speed: drone.take_picture(),
         }
         self.speed = 10
@@ -42,24 +42,34 @@ class ControlDrone:
         drone.land()
         drone.quit()
 
-    def move_right(self):
-        self.drone.counter_clockwise(self.speed)
-        self.drone.right(self.speed)
+    def move_right(self, speed):
+        self.drone.counter_clockwise(speed)
+        self.drone.right(speed)
 
-    def move_left(self):
-        self.drone.clockwise(self.speed)
-        self.drone.left(self.speed)
+    def move_left(self, speed):
+        self.drone.clockwise(speed)
+        self.drone.left(speed)
     
-    def move_up(self):
-        self.drone.up(self.speed)
+    def move_up(self, speed=-1):
+        if speed == -1:
+            self.drone.up(self.speed)
+        else:
+            self.drone.up(speed)
 
     def get_movement(self, position, speed=-1):
-        speed = self.speed if speed == -1 else speed
-        accion = self.controls[position]
-        if type(accion) == str:
-            getattr(self.drone, accion)(speed)
-        else:
-            accion(self.drone, speed)
+        time.sleep(0.01)
+        if speed == -1:
+            accion = self.controls[position]
+            if type(accion) == str:
+                getattr(self.drone, accion)(self.speed)
+            else:
+                accion(self.drone, self.speed)
+        elif speed != -1:
+            accion = self.controls[position]
+            if type(accion) == str:
+                getattr(self.drone, accion)(speed)
+            else:
+                accion(self.drone, speed)
 
     def handleFileReceived(self, event, sender, data):
         path = 'tello-%s.jpeg' % (

@@ -385,7 +385,7 @@ class Skeletonizer:
                 if 85 > angulo_codo_mano > 70:
                     status = 'atras'
         # print(status) if status != None else print("Nada")
-        return status, check_human_vision(potential_kpts)
+        return status, self.check_human_vision(potential_kpts)
 
     def check_human_vision(self, potential_kpts):
         cadera_derecha = potential_kpts['Rhip']
@@ -394,10 +394,7 @@ class Skeletonizer:
         if esternon is not None:
             return True
         else:
-            if cadera_derecha is not None or cadera_izquierda is not None:
-                return "up_low"
-            else:
-                return "up_high"
+            return "up"
 
 
 
