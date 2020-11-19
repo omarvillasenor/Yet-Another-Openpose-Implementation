@@ -390,8 +390,8 @@ class Skeletonizer:
 
     #Esta función pretende detectar al humano para poderse "autoajustar"
     def check_human_vision(self, potential_kpts):
-        cadera_derecha = potential_kpts['Rhip']
-        cadera_izquierda = potential_kpts['Lhip']
+        # cadera_derecha = potential_kpts['Rhip']
+        # cadera_izquierda = potential_kpts['Lhip']
         esternon = potential_kpts['sternum']
         if esternon is not None:
             return True
