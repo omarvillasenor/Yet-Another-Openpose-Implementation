@@ -52,12 +52,16 @@ class ControlDrone:
         if speed == -1:
             accion = self.controls[position]
             if type(accion) == str:
-                if accion == 'adelante' and 0 < self.position < 6:
-                    self.position-=1
-                    getattr(self.drone, accion)(self.speed)
-                elif accion == 'atras' and 0 < self.position < 6:
-                    self.position+=1
-                    getattr(self.drone, accion)(self.speed)
+                print(f'Potion value -> {self.position}')
+                if 0 <= self.position <= 6:
+                    if position == 'adelante':
+                        if self.position < 6:
+                            getattr(self.drone, accion)(self.speed*2)
+                            self.position += 1
+                    elif position == 'atras':
+                        if self.position > 0:
+                            getattr(self.drone, accion)(self.speed*2)
+                            self.position -= 1
             else:
                 accion(self.drone, self.speed)
         elif speed != -1:

@@ -6,58 +6,104 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1009</width>
-    <height>696</height>
+    <width>929</width>
+    <height>692</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+	background-color: transparent;
+}
+
+QPushButton::hover {
+	background-color: #D3D3D3;
+}
+
+QMainWindow, QWidget {
+	background-color: #F1F5FA;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="StartButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>20</y>
-      <width>271</width>
-      <height>61</height>
+      <x>770</x>
+      <y>240</y>
+      <width>71</width>
+      <height>71</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="text">
-     <string>Iniciar Drone</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/zumbido.png</normaloff>../icons/zumbido.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>60</width>
+      <height>60</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="StopButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>410</y>
-      <width>271</width>
-      <height>61</height>
+      <x>490</x>
+      <y>540</y>
+      <width>81</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
-     <string>Detener Drone</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/sin-parar.png</normaloff>../icons/sin-parar.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="PictureButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>330</y>
-      <width>271</width>
+      <x>70</x>
+      <y>530</y>
+      <width>91</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>Tomar foto</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/camara-fotografica.png</normaloff>../icons/camara-fotografica.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
     </property>
    </widget>
    <widget class="QLabel" name="CameraLabel">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>80</y>
+      <x>30</x>
+      <y>30</y>
       <width>640</width>
       <height>480</height>
      </rect>
@@ -72,66 +118,139 @@
    <widget class="QPushButton" name="PalmButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>490</y>
-      <width>271</width>
+      <x>220</x>
+      <y>530</y>
+      <width>81</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>Detener Drone en palma</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/mano.png</normaloff>../icons/mano.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="close_button">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>570</y>
-      <width>271</width>
-      <height>61</height>
+      <x>360</x>
+      <y>540</y>
+      <width>81</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
-     <string>Cerrar Conexión</string>
+     <string/>
     </property>
-   </widget>
-   <widget class="QPushButton" name="FlightButton">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>90</y>
-      <width>271</width>
-      <height>61</height>
-     </rect>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/letra-x.png</normaloff>../icons/letra-x.png</iconset>
     </property>
-    <property name="text">
-     <string>Elevar drone</string>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="UpButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
+      <x>760</x>
       <y>170</y>
-      <width>271</width>
+      <width>81</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>Subir drone</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/flecha-arriba.png</normaloff>../icons/flecha-arriba.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
     </property>
    </widget>
    <widget class="QPushButton" name="DownButton">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>250</y>
-      <width>271</width>
+      <x>760</x>
+      <y>310</y>
+      <width>81</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>Bajar drone</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/descarga-arrow.png</normaloff>../icons/descarga-arrow.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="LeftButton">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>240</y>
+      <width>81</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/flecha-izquierda.png</normaloff>../icons/flecha-izquierda.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="RightButton">
+    <property name="geometry">
+     <rect>
+      <x>840</x>
+      <y>240</y>
+      <width>81</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/flecha-correcta.png</normaloff>../icons/flecha-correcta.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
     </property>
    </widget>
   </widget>
@@ -140,7 +259,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1009</width>
+     <width>929</width>
      <height>26</height>
     </rect>
    </property>

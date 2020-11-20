@@ -48,35 +48,38 @@ class Thread(QThread):
         last = ""
         while True:
             time.sleep(0.01)
-            for frame in container.decode(video=0):
-                if 0 < frame_skip:
-                    frame_skip = frame_skip - 1
-                    continue
-                start_time = time.time()
-                rgbImage = np.array(frame.to_image())
-                position = self.process_frame(rgbImage)
+            try:
+                for frame in container.decode(video=0):
+                    if 0 < frame_skip:
+                        frame_skip = frame_skip - 1
+                        continue
+                    start_time = time.time()
+                    rgbImage = np.array(frame.to_image())
+                    position = self.process_frame(rgbImage)
 
-                if position is not None:
-                    last = position
-                    drone.get_movement(position)
-                    flag = True
-                elif last != "" and position is None:
-                    if flag == True:
-                        drone.get_movement(last, 0)
-                        flag = False
-                else:
-                    drone.move_up(1)
+                    if position is not None:
+                        last = position
+                        drone.get_movement(position)
+                        flag = True
+                    elif last != "" and position is None:
+                        if flag == True:
+                            drone.get_movement(last, 0)
+                            flag = False
+                    else:
+                        drone.move_up(0)
 
-                h, w, ch = rgbImage.shape
-                bytesPerLine = ch * w
-                convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
-                p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-                self.changePixmap.emit(p)
-                if frame.time_base < 1.0/60:
-                    time_base = 1.0/60
-                else:
-                    time_base = frame.time_base
-                frame_skip = int((time.time() - start_time)/time_base)
+                    h, w, ch = rgbImage.shape
+                    bytesPerLine = ch * w
+                    convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
+                    p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+                    self.changePixmap.emit(p)
+                    if frame.time_base < 1.0/60:
+                        time_base = 1.0/60
+                    else:
+                        time_base = frame.time_base
+                    frame_skip = int((time.time() - start_time)/time_base)
+            except:
+                self.exit()
                
                 
 
@@ -92,13 +95,15 @@ class MainWindow(QMainWindow):
         self.close_button.clicked.connect(self.close_conection)
         self.StopButton.clicked.connect(self.land)
         self.PalmButton.clicked.connect(self.palm_land)
-        self.FlightButton.clicked.connect(self.flight)
+        self.LeftButton.clicked.connect(self.move_left)
+        self.RightButton.clicked.connect(self.move_right)
         self.UpButton.clicked.connect(self.up)
         self.DownButton.clicked.connect(self.down)
         self.hide_buttons()
         self.drone = None
         self.setFixedSize(self.width(),self.height())
         self.speed = 10
+        self.th = Thread(self)
 
     def hide_buttons(self):
         self.StartButton.show()
@@ -106,7 +111,8 @@ class MainWindow(QMainWindow):
         self.close_button.hide()
         self.StopButton.hide()
         self.PalmButton.hide()
-        self.FlightButton.hide()
+        self.LeftButton.hide()
+        self.RightButton.hide()
         self.UpButton.hide()
         self.DownButton.hide()
         self.CameraLabel.hide()
@@ -117,7 +123,8 @@ class MainWindow(QMainWindow):
         self.close_button.show()
         self.StopButton.show()
         self.PalmButton.show()
-        self.FlightButton.show()
+        self.LeftButton.show()
+        self.RightButton.show()
         self.UpButton.show()
         self.DownButton.show()
         self.CameraLabel.show()
@@ -134,13 +141,11 @@ class MainWindow(QMainWindow):
             self.show_buttons()
             drone = ControlDrone(self.drone)
             self.CameraLabel.show()
-            th = Thread(self)
-            th.changePixmap.connect(self.setImage)
-            th.start()
+            self.th.changePixmap.connect(self.setImage)
+            self.th.start()
             self.StartButton.hide()
             self.flight()
-            self.up()
-            self.up()
+            self.drone.up(self.speed*2.5)
         else:
             self.errorMessage("No se encontró un drone para conectar, verifique la red WiFi y la batería")
             self.close()
@@ -170,9 +175,11 @@ class MainWindow(QMainWindow):
 
     def close_conection(self):
         if self.drone is not None:
+            self.land()
             self.CameraLabel.hide()
             self.StartButton.show()
             self.drone.quit()
+            self.th.exit()
 
     def land(self):
         if self.drone is not None:
@@ -181,6 +188,14 @@ class MainWindow(QMainWindow):
     def flight(self):
         if self.drone is not None:
             self.drone.takeoff()
+
+    def move_right(self):
+        self.drone.counter_clockwise(5)
+        self.drone.right(10)
+
+    def move_left(self):
+        self.drone.clockwise(5)
+        self.drone.left(10)
 
 app = QApplication(sys.argv)
 ex2 = MainWindow()
