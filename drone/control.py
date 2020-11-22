@@ -22,6 +22,7 @@ class ControlDrone:
         self.speed = 10
         self.date_fmt = '%Y-%m-%d_%H%M%S'
         self.position = 3
+        self.maximum = 9
 
     def start_fligt(self):
         self.drone.takeoff()
@@ -53,9 +54,9 @@ class ControlDrone:
             accion = self.controls[position]
             if type(accion) == str:
                 print(f'Potion value -> {self.position}')
-                if 0 <= self.position <= 6:
+                if 0 <= self.position <= self.maximum:
                     if position == 'adelante':
-                        if self.position < 6:
+                        if self.position < self.maximum:
                             getattr(self.drone, accion)(self.speed*2)
                             self.position += 1
                     elif position == 'atras':

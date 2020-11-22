@@ -56,7 +56,7 @@ QMainWindow, QWidget {
    <widget class="QPushButton" name="StopButton">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>590</x>
       <y>540</y>
       <width>81</width>
       <height>51</height>
@@ -79,7 +79,7 @@ QMainWindow, QWidget {
    <widget class="QPushButton" name="PictureButton">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>170</x>
       <y>530</y>
       <width>91</width>
       <height>61</height>
@@ -118,7 +118,7 @@ QMainWindow, QWidget {
    <widget class="QPushButton" name="PalmButton">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>320</x>
       <y>530</y>
       <width>81</width>
       <height>61</height>
@@ -141,7 +141,7 @@ QMainWindow, QWidget {
    <widget class="QPushButton" name="close_button">
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>460</x>
       <y>540</y>
       <width>81</width>
       <height>51</height>
@@ -245,6 +245,29 @@ QMainWindow, QWidget {
     <property name="icon">
      <iconset>
       <normaloff>../icons/flecha-correcta.png</normaloff>../icons/flecha-correcta.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="TakeOffButton">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>530</y>
+      <width>91</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/takeoff.png</normaloff>../icons/takeoff.png</iconset>
     </property>
     <property name="iconSize">
      <size>

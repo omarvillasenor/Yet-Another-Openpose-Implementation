@@ -25,6 +25,6 @@ class ModelWrapper:
         pafs = pafs[0]
         kpts = kpts[0]
         skeletonizer = post.Skeletonizer(kpts, pafs)
-        # skeletons = skeletonizer.create_skeletons()
+        skeletons = skeletonizer.create_skeletons()
         position = skeletonizer.check_positions()
         return position

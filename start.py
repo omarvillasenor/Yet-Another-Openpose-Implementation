@@ -99,11 +99,13 @@ class MainWindow(QMainWindow):
         self.RightButton.clicked.connect(self.move_right)
         self.UpButton.clicked.connect(self.up)
         self.DownButton.clicked.connect(self.down)
+        self.TakeOffButton.clicked.connect(self.flight)
         self.hide_buttons()
         self.drone = None
         self.setFixedSize(self.width(),self.height())
         self.speed = 10
         self.th = Thread(self)
+        self.is_flying = False
 
     def hide_buttons(self):
         self.StartButton.show()
@@ -116,6 +118,7 @@ class MainWindow(QMainWindow):
         self.UpButton.hide()
         self.DownButton.hide()
         self.CameraLabel.hide()
+        self.TakeOffButton.hide()
 
     def show_buttons(self):
         self.StartButton.hide()
@@ -128,6 +131,7 @@ class MainWindow(QMainWindow):
         self.UpButton.show()
         self.DownButton.show()
         self.CameraLabel.show()
+        self.TakeOffButton.show()
 
     @pyqtSlot(QImage)
     def setImage(self, image):
@@ -137,15 +141,15 @@ class MainWindow(QMainWindow):
     def start_drone(self):
         global container, drone
         self.drone, container = dr.start_drone()
-        if self.drone != None:
+        if self.drone is not None and self.is_flying == False:
             self.show_buttons()
             drone = ControlDrone(self.drone)
             self.CameraLabel.show()
             self.th.changePixmap.connect(self.setImage)
             self.th.start()
             self.StartButton.hide()
-            self.flight()
-            self.drone.up(self.speed*2.5)
+            # self.flight()
+            self.drone.up(self.speed*3)
         else:
             self.errorMessage("No se encontró un drone para conectar, verifique la red WiFi y la batería")
             self.close()
@@ -156,46 +160,62 @@ class MainWindow(QMainWindow):
         errorBox.setText(message)
         errorBox.setWindowTitle("ERROR")
         errorBox.exec_()
+        self.close()
 
     def up(self):
-        if self.drone is not None:
+        if self.drone is not None and self.is_flying != False:
+            # self.th.sleep(1)
             self.drone.up(self.speed*1.5)
 
     def down(self):
         if self.drone is not None:
+            # self.th.sleep(2)
             self.drone.down(10)
 
     def take_picture(self):
-        global drone
-        drone.take_picture()
+        if self.drone is not None and self.is_flying != False:
+            # self.th.sleep(2)
+            global drone
+            drone.take_picture()
 
     def palm_land(self):
-        if self.drone is not None:
+        if self.drone is not None and self.is_flying != False:
+            # self.th.sleep(2)
             self.drone.palm_land()
 
     def close_conection(self):
-        if self.drone is not None:
+        if self.drone is not None and self.is_flying != False:
+            # self.th.sleep(2)
             self.land()
             self.CameraLabel.hide()
             self.StartButton.show()
             self.drone.quit()
             self.th.exit()
+            exit(1)
 
     def land(self):
-        if self.drone is not None:
+        if self.drone is not None and self.is_flying != False:
+            # self.th.sleep(2)
             self.drone.land()
+            self.is_flying = False
     
     def flight(self):
-        if self.drone is not None:
+        if self.drone is not None and self.is_flying == False:
+            self.th.sleep(2)
             self.drone.takeoff()
+            self.is_flying = True
 
     def move_right(self):
-        self.drone.counter_clockwise(5)
-        self.drone.right(10)
+        if self.drone is not None and self.is_flying != False:
+            # self.th.sleep(2)
+            self.drone.counter_clockwise(5)
+            self.drone.right(10)
 
     def move_left(self):
-        self.drone.clockwise(5)
-        self.drone.left(10)
+        if self.drone is not None and self.is_flying != False:
+            # self.th.sleep(2)
+            self.drone.clockwise(5)
+            self.drone.left(10)
 
 app = QApplication(sys.argv)
 ex2 = MainWindow()
