@@ -36,6 +36,7 @@ class Thread(QThread):
     """
 
     changePixmap = pyqtSignal(QImage)
+    detected_class = pyqtSignal(str)
     
     def process_frame(self, img):
         global model_wrapper
@@ -56,7 +57,7 @@ class Thread(QThread):
                     start_time = time.time()
                     rgbImage = np.array(frame.to_image())
                     position = self.process_frame(rgbImage)
-
+                    clase = "Nada" if position == None else position
                     if position is not None:
                         last = position
                         drone.get_movement(position)
@@ -73,6 +74,7 @@ class Thread(QThread):
                     convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
                     p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
                     self.changePixmap.emit(p)
+                    self.detected_class.emit(clase)
                     if frame.time_base < 1.0/60:
                         time_base = 1.0/60
                     else:
@@ -119,6 +121,8 @@ class MainWindow(QMainWindow):
         self.DownButton.hide()
         self.CameraLabel.hide()
         self.TakeOffButton.hide()
+        self.ClassLabel.hide()
+        self.ActualClass.hide()
 
     def show_buttons(self):
         self.StartButton.hide()
@@ -132,10 +136,16 @@ class MainWindow(QMainWindow):
         self.DownButton.show()
         self.CameraLabel.show()
         self.TakeOffButton.show()
+        self.ClassLabel.show()
+        self.ActualClass.show()
 
     @pyqtSlot(QImage)
     def setImage(self, image):
         self.CameraLabel.setPixmap(QPixmap.fromImage(image))
+    
+    @pyqtSlot(str)
+    def setClass(self, clase):
+        self.ActualClass.setText(clase)
 
     #Esta función arranca el drone e inicializa los botones de la interfaz
     def start_drone(self):
@@ -146,10 +156,9 @@ class MainWindow(QMainWindow):
             drone = ControlDrone(self.drone)
             self.CameraLabel.show()
             self.th.changePixmap.connect(self.setImage)
+            self.th.detected_class.connect(self.setClass)
             self.th.start()
             self.StartButton.hide()
-            # self.flight()
-            self.drone.up(self.speed*3)
         else:
             self.errorMessage("No se encontró un drone para conectar, verifique la red WiFi y la batería")
             self.close()

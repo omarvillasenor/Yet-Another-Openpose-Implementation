@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>929</width>
-    <height>692</height>
+    <width>961</width>
+    <height>661</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,21 +19,21 @@
 }
 
 QPushButton::hover {
-	background-color: #D3D3D3;
+	background-color: #e33b0b;
 }
 
-QMainWindow, QWidget {
-	background-color: #F1F5FA;
+QMainWindow{
+	background-color: #232324;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="StartButton">
     <property name="geometry">
      <rect>
-      <x>770</x>
-      <y>240</y>
-      <width>71</width>
-      <height>71</height>
+      <x>810</x>
+      <y>510</y>
+      <width>121</width>
+      <height>101</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -56,10 +56,10 @@ QMainWindow, QWidget {
    <widget class="QPushButton" name="StopButton">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>540</y>
-      <width>81</width>
-      <height>51</height>
+      <x>440</x>
+      <y>550</y>
+      <width>101</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -67,12 +67,12 @@ QMainWindow, QWidget {
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../icons/sin-parar.png</normaloff>../icons/sin-parar.png</iconset>
+      <normaloff>../icons/land.png</normaloff>../icons/land.png</iconset>
     </property>
     <property name="iconSize">
      <size>
-      <width>40</width>
-      <height>40</height>
+      <width>60</width>
+      <height>60</height>
      </size>
     </property>
    </widget>
@@ -80,9 +80,9 @@ QMainWindow, QWidget {
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>530</y>
-      <width>91</width>
-      <height>61</height>
+      <y>550</y>
+      <width>101</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -109,7 +109,8 @@ QMainWindow, QWidget {
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 2px solid;</string>
+     <string notr="true">border: 3px solid;
+border-color: white;</string>
     </property>
     <property name="text">
      <string/>
@@ -118,10 +119,10 @@ QMainWindow, QWidget {
    <widget class="QPushButton" name="PalmButton">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>530</y>
-      <width>81</width>
-      <height>61</height>
+      <x>310</x>
+      <y>550</y>
+      <width>101</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -133,18 +134,18 @@ QMainWindow, QWidget {
     </property>
     <property name="iconSize">
      <size>
-      <width>40</width>
-      <height>40</height>
+      <width>60</width>
+      <height>60</height>
      </size>
     </property>
    </widget>
    <widget class="QPushButton" name="close_button">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>540</y>
-      <width>81</width>
-      <height>51</height>
+      <x>570</x>
+      <y>550</y>
+      <width>101</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -188,7 +189,7 @@ QMainWindow, QWidget {
     <property name="geometry">
      <rect>
       <x>760</x>
-      <y>310</y>
+      <y>320</y>
       <width>81</width>
       <height>61</height>
      </rect>
@@ -210,10 +211,10 @@ QMainWindow, QWidget {
    <widget class="QPushButton" name="LeftButton">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>680</x>
       <y>240</y>
       <width>81</width>
-      <height>61</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -233,10 +234,10 @@ QMainWindow, QWidget {
    <widget class="QPushButton" name="RightButton">
     <property name="geometry">
      <rect>
-      <x>840</x>
+      <x>850</x>
       <y>240</y>
       <width>81</width>
-      <height>61</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -257,9 +258,9 @@ QMainWindow, QWidget {
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>530</y>
-      <width>91</width>
-      <height>61</height>
+      <y>550</y>
+      <width>101</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -271,21 +272,55 @@ QMainWindow, QWidget {
     </property>
     <property name="iconSize">
      <size>
-      <width>40</width>
-      <height>40</height>
+      <width>60</width>
+      <height>60</height>
      </size>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>929</width>
-     <height>26</height>
-    </rect>
-   </property>
+   <widget class="QLabel" name="ActualClass">
+    <property name="geometry">
+     <rect>
+      <x>730</x>
+      <y>50</y>
+      <width>171</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 3px solid;
+border-color: white;
+color: white;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ClassLabel">
+    <property name="geometry">
+     <rect>
+      <x>730</x>
+      <y>20</y>
+      <width>181</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: white;</string>
+    </property>
+    <property name="text">
+     <string>Posición detectada</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
