@@ -53,7 +53,7 @@ class ControlDrone:
         if speed == -1:
             accion = self.controls[position]
             if type(accion) == str:
-                print(f'Potion value -> {self.position}')
+                print(f'Position value -> {self.position}')
                 if 0 <= self.position <= self.maximum:
                     if position == 'adelante':
                         if self.position < self.maximum:
@@ -71,6 +71,7 @@ class ControlDrone:
                 getattr(self.drone, accion)(speed)
             else:
                 accion(self.drone, speed)
+        # return self.position
 
     def handleFileReceived(self, event, sender, data):
         path = 'tello-%s.jpeg' % (

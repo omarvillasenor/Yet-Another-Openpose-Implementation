@@ -162,6 +162,7 @@ class MainWindow(QMainWindow):
         else:
             self.errorMessage("No se encontró un drone para conectar, verifique la red WiFi y la batería")
             self.close()
+            exit(0)
 
     def errorMessage(self, message):
         errorBox = QMessageBox()
@@ -173,8 +174,8 @@ class MainWindow(QMainWindow):
 
     def up(self):
         if self.drone is not None and self.is_flying != False:
-            # self.th.sleep(1)
-            self.drone.up(self.speed*1.5)
+            self.th.sleep(1)
+            self.drone.up(self.speed*3)
 
     def down(self):
         if self.drone is not None:
@@ -193,14 +194,17 @@ class MainWindow(QMainWindow):
             self.drone.palm_land()
 
     def close_conection(self):
-        if self.drone is not None and self.is_flying != False:
-            # self.th.sleep(2)
+        if self.drone is not None:
+            self.th.sleep(1)
             self.land()
             self.CameraLabel.hide()
             self.StartButton.show()
             self.drone.quit()
             self.th.exit()
-            exit(1)
+            exit(0)
+        else:
+            #self.th.exit()
+            exit(0)
 
     def land(self):
         if self.drone is not None and self.is_flying != False:
@@ -212,6 +216,7 @@ class MainWindow(QMainWindow):
         if self.drone is not None and self.is_flying == False:
             self.th.sleep(2)
             self.drone.takeoff()
+            self.drone.up(self.speed*2)
             self.is_flying = True
 
     def move_right(self):
