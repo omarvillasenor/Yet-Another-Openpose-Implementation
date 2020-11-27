@@ -179,18 +179,18 @@ class MainWindow(QMainWindow):
 
     def down(self):
         if self.drone is not None:
-            # self.th.sleep(2)
+            self.th.sleep(1)
             self.drone.down(10)
 
     def take_picture(self):
         if self.drone is not None and self.is_flying != False:
-            # self.th.sleep(2)
+            self.th.sleep(1)
             global drone
             drone.take_picture()
 
     def palm_land(self):
         if self.drone is not None and self.is_flying != False:
-            # self.th.sleep(2)
+            self.th.sleep(1)
             self.drone.palm_land()
 
     def close_conection(self):
@@ -208,26 +208,26 @@ class MainWindow(QMainWindow):
 
     def land(self):
         if self.drone is not None and self.is_flying != False:
-            # self.th.sleep(2)
+            self.th.sleep(1)
             self.drone.land()
             self.is_flying = False
     
     def flight(self):
         if self.drone is not None and self.is_flying == False:
-            self.th.sleep(2)
+            self.th.sleep(1)
             self.drone.takeoff()
             self.drone.up(self.speed*2)
             self.is_flying = True
 
     def move_right(self):
         if self.drone is not None and self.is_flying != False:
-            # self.th.sleep(2)
+            self.th.sleep(1)
             self.drone.counter_clockwise(5)
             self.drone.right(10)
 
     def move_left(self):
         if self.drone is not None and self.is_flying != False:
-            # self.th.sleep(2)
+            self.th.sleep(1)
             self.drone.clockwise(5)
             self.drone.left(10)
 
